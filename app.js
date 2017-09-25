@@ -41,7 +41,11 @@ const app = (function () {
          */
         this.addPost = function () {
             _.posts.push(new Post(postId++));
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> test
             _.appendPosts(true);
         }
 
@@ -50,6 +54,7 @@ const app = (function () {
 
             this.addPostBtn.addEventListener('click', this.addPost);
         }
+<<<<<<< HEAD
 
     }
 
@@ -91,6 +96,49 @@ const app = (function () {
 
         postDocFrag.appendChild(li);
 
+=======
+
+    }
+
+    function Post(id) {
+        this.id = id;
+        this.heading = 'heading';
+        this.text = 'text';
+    }
+
+    /**
+     * Creates post HTML structure.
+     * @param  {string} postText - text property from post-object
+     */
+    Post.prototype.postView = function () {
+
+        /** Variables */
+        let postDocFrag, li, header, body, btnRemove;
+
+        postDocFrag = document.createDocumentFragment();
+
+        li = document.createElement('li');
+        li.className = 'post';
+
+        header = document.createElement('header');
+        header.className = 'post-header';
+        header.innerHTML = this.heading;
+
+        btnRemove = document.createElement('button');
+        btnRemove.className = 'btn_remove-post';
+        btnRemove.innerHTML = 'X';
+
+        body = document.createElement('div');
+        body.className = 'post-body';
+        body.innerHTML = this.text;
+
+        li.appendChild(header);
+        header.appendChild(btnRemove);
+        li.appendChild(body);
+
+        postDocFrag.appendChild(li);
+
+>>>>>>> test
         btnRemove.addEventListener('click', () => {
             let result = blog.posts.findIndex((elem) => {
                 if (elem.id === this.id) return elem;
