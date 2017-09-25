@@ -73,18 +73,19 @@ const app = (function () {
                 li.appendChild(header);
                 li.appendChild(btnRemove);
                 li.appendChild(body);
+
                 postDocFrag.appendChild(li);
 
                 btnRemove.addEventListener('click', () => {
-                    let result = _.posts.findIndex((elem) => {
+                    let index = _.posts.findIndex((elem) => {
                         if (elem.id === this.id) return elem;
                     });
-                    _.posts.splice(result, 1);
-                    li.remove();
-                    console.log(_.posts);
+                    
+                    _.posts.splice(index, 1);
 
+                    li.remove();
                 });
-                // master
+                
                 return postDocFrag;
             }
 
