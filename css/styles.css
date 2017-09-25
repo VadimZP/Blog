@@ -1,4 +1,4 @@
-/*Reset styles start*/
+/* Reset styles start */
 * {
   margin: 0;
   padding: 0;
@@ -12,7 +12,7 @@ a {
 ul {
   list-style: none; }
 
-/*Reset styles end*/
+/* Reset styles end */
 /* Mixins */
 html {
   font-size: 10px; }
