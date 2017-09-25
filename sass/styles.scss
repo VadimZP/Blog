@@ -1,0 +1,121 @@
+/*Reset styles start*/
+
+* {
+    margin: 0;
+    padding: 0;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+
+/*Reset styles end*/
+
+
+/* Mixins */
+
+@mixin bg-img($size, $repeat, $position) {
+    background-size: $size;
+    background-repeat: $repeat;
+    background-position: $position;
+}
+
+html {
+    font-size: 10px;
+}
+
+body {
+    opacity: 1;
+}
+
+.wrapper {
+    font-family: 'Bubbler One', sans-serif;
+}
+
+.page-bg {
+    width: 100%;
+    height: 500px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: -9999;
+    background-color: #ecedff;
+}
+
+.blog-container {
+    width: 1000px;
+    margin: 220px auto;
+    background-color: #fff;
+    box-shadow: 0 1px 2px #d3d3d3;
+    border-radius: 4px;
+}
+
+#user-info {
+    height: 281px;
+    padding-top: 30px;
+    border-bottom: 1px solid #f1f1f1;
+    font-size: 2.2rem; // row-1
+    .row-1 {
+        margin-bottom: 60px;
+        display: flex;
+        justify-content: space-around;
+        font-weight: bold;
+        .user-avatar {
+            width: 220px;
+            height: 220px;
+            margin-top: -160px;
+            background: #c3c3c3;
+            border: 3px solid #fff;
+            border-radius: 4px;
+            box-shadow: 0 1px 2px #d3d3d3;
+        }
+    } // row-2
+    .row-2 {
+        display: flex;
+        justify-content: space-around;
+        text-align: center;
+        span {
+            display: block;
+            font-weight: bold;
+        }
+    }
+}
+
+.blog-body {
+    .posts_manage-panel {
+        width: inherit;
+        height: 50px;
+        display: flex;
+        border-bottom: 1px solid #f1f1f1;
+        .btn_add-post {
+            display: block;
+            margin-left: auto;
+        }
+    }
+}
+
+.post-list {
+    padding: 30px 10px 5px;
+}
+
+.post {
+    width: inherit;
+    min-height: 200px;
+    margin-bottom: 30px;
+    border-radius: 4px;
+    box-shadow: 0 0 3px #d3d3d3;
+    background: #fff;
+    .post-header {
+        height: 35px;
+        background: #f8f8f8;
+    }
+    .post-body {}
+}
