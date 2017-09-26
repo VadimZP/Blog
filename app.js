@@ -40,6 +40,8 @@ const app = (function () {
          */
         this.addPost = function () {
             modal();
+            postEditBody();
+            
             data[0].posts.push(new Post(postId++));
 
             this.appendPosts(true);
@@ -134,9 +136,28 @@ const app = (function () {
         modalHeader.appendChild(btnClose);
 
         modalFrag.appendChild(overlay);
-        
+
         body.insertBefore(modalFrag, body.firstChild);
 
+    }
+
+
+    function postEditBody() {
+        let postEditFrag, heading, content, modalBody;
+
+        postEditFrag = document.createDocumentFragment();
+
+        heading = document.createElement('input');
+
+        content = document.createElement('div');
+        content.setAttribute('contentEditible', 'true');
+
+        postEditFrag.appendChild(heading);
+        postEditFrag.appendChild(content);
+
+        modalBody = document.querySelector('.modal-body');
+
+        modalBody.appendChild(postEditFrag);
     }
 
     // Initialization step
