@@ -101,6 +101,8 @@ body {
   .post .post-header {
     height: 35px;
     background: #f8f8f8; }
+  .post .post-body {
+    height: 100%; }
 
 .overlay {
   width: 100%;

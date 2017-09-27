@@ -1,36 +1,31 @@
 const app = (function () {
 
-    /** Variables */
     let postId = 0;
-
-    let data = [{
-        posts: []
-    }];
 
     /**
      * Creates blog app controller.
      * @constructor
      */
     function Blog() {
+
+        this.posts = [];
+
         /**
          * Output posts to the page from storage.
          * @param  {boolean} addNewPost - if true, add newly created post
          */
         this.appendPosts = function (addNewPost) {
-            if (!data[0].posts.length) return;
+            if (!this.posts.length) return;
 
             const postsContainer = document.querySelector('.post-list');
 
             if (addNewPost) {
-                const addedPost = data[0].posts[data[0].posts.length - 1];
-                const postElem = addedPost.postView();
+                const addedPost = this.posts[this.posts.length - 1];
 
-                postsContainer.appendChild(postElem);
+                postsContainer.appendChild(addedPost.postView());
             } else {
-                data[0].posts.forEach(elem => {
-                    const postElem = elem.postView();
-
-                    postsContainer.appendChild(postElem);
+                this.posts.forEach(elem => {
+                    postsContainer.appendChild(elem.postView());
                 });
             }
         }
@@ -39,28 +34,23 @@ const app = (function () {
          * Adds new post-object to the post's storage.
          */
         this.addPost = function () {
-            modal();
-            postEditBody();
-            
-            data[0].posts.push(new Post(postId++));
+            modal(postEditBody());
 
-            this.appendPosts(true);
         }.bind(this);
 
-        this.addPostBtn = document.getElementById('btn_add-post');
+        const addPostBtn = document.getElementById('btn_add-post');
 
-        this.addPostBtn.addEventListener('click', this.addPost);
+        addPostBtn.addEventListener('click', this.addPost);
     }
 
-    function Post(id) {
+    function Post(id, heading, text) {
         this.id = id;
-        this.heading = 'heading';
-        this.text = 'text';
+        this.heading = heading;
+        this.text = text;
     }
 
     /**
      * Creates post HTML structure.
-     * @param  {string} postText - text property from post-object
      */
     Post.prototype.postView = function () {
 
@@ -75,6 +65,10 @@ const app = (function () {
         header.className = 'post-header';
         header.innerHTML = this.heading;
 
+        btnEdit = document.createElement('button');
+        btnEdit.className = 'btn_edit-post';
+        btnEdit.innerHTML = 'edit';
+
         btnRemove = document.createElement('button');
         btnRemove.className = 'btn_remove-post';
         btnRemove.innerHTML = 'X';
@@ -85,25 +79,38 @@ const app = (function () {
 
         li.appendChild(header);
         header.appendChild(btnRemove);
+        header.appendChild(btnEdit);
         li.appendChild(body);
 
         postFrag.appendChild(li);
 
         btnRemove.addEventListener('click', () => {
-            let postIndex = data[0].posts.findIndex((elem) => {
-                if (elem.id === this.id) return elem;
-            });
-
-            data[0].posts.splice(postIndex, 1);
+            blog.posts.splice(getPostIndex.call(this), 1);
 
             li.remove();
+        });
+
+        btnEdit.addEventListener('click', () => {
+
+            console.log(blog.posts[getPostIndex.call(this)]);
         });
 
         return postFrag;
     }
 
-    function modal() {
-        let modalFrag, overlay, modalWindow, modalHeader, modalBody, btnClose, btnAccept, body;
+    function getPostIndex() {
+        return blog.posts.findIndex((elem) => {
+            if (elem.id === this.id) return elem;
+        });
+    }
+
+    /**
+     * @param  {function} f 
+     */
+    function modal(f) {
+        let modalFrag, overlay, modalWindow, modalHeader, modalBody, btnClose, btnAccept, body, incomingData;
+
+        incomingData = f;
 
         body = document.body;
 
@@ -131,6 +138,9 @@ const app = (function () {
 
         overlay.appendChild(modalWindow);
         modalWindow.appendChild(modalHeader);
+
+        modalBody.appendChild(incomingData[0]);
+
         modalWindow.appendChild(modalBody);
         modalWindow.appendChild(btnAccept);
         modalHeader.appendChild(btnClose);
@@ -139,25 +149,43 @@ const app = (function () {
 
         body.insertBefore(modalFrag, body.firstChild);
 
+        overlay.addEventListener('click', function (e) {
+            if (e.target === overlay) this.remove();
+        });
+
+        btnAccept.addEventListener('click', () => {
+            const postHeading = incomingData[1].innerHTML;
+            const postContent = incomingData[2].innerHTML;
+
+            blog.posts.push(new Post(postId++, postHeading, postContent));
+
+            blog.appendPosts(true);
+            overlay.remove();
+        });
+
+        btnClose.addEventListener('click', () => {
+            overlay.remove();
+        });
     }
 
 
     function postEditBody() {
-        let postEditFrag, heading, content, modalBody;
+        let postEditFrag, heading, content;
 
         postEditFrag = document.createDocumentFragment();
 
-        heading = document.createElement('input');
+        heading = document.createElement('div');
+        heading.className = 'post-heading';
+        heading.setAttribute('contenteditable', 'true');
 
         content = document.createElement('div');
-        content.setAttribute('contentEditible', 'true');
+        content.className = 'post-content';
+        content.setAttribute('contenteditable', 'true');
 
         postEditFrag.appendChild(heading);
         postEditFrag.appendChild(content);
 
-        modalBody = document.querySelector('.modal-body');
-
-        modalBody.appendChild(postEditFrag);
+        return [postEditFrag, heading, content];
     }
 
     // Initialization step
